@@ -6,31 +6,32 @@ import './App.css';
 function App() {
   const [isClicking, setIsClicking] = useState(false);
 
+  //start the clicking 
   const startClicking = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs[0]?.id) {
         chrome.scripting.executeScript({
           target: { tabId: tabs[0].id },
-          function: executeStartClicking, // Inject the startClicking function
+          function: executeStartClicking, 
         });
       }
     });
     setIsClicking(true); // Disable the start button
   };
-
+// stop the clicking
   const stopClicking = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs[0]?.id) {
         chrome.scripting.executeScript({
           target: { tabId: tabs[0].id },
-          function: executeStopClicking, // Inject the stopClicking function
+          function: executeStopClicking, 
         });
       }
     });
     setIsClicking(false); // Enable the start button
   };
 
-  // Function injected to start clicking on "Connect" buttons
+  // Function for start clicking on "Connect" buttons
   function executeStartClicking() {
     window.clickInterval = setInterval(() => {
       const connectButtons = Array.from(document.querySelectorAll('button')).filter(
